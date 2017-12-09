@@ -31,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setIds();
         // creates file
-        file = new File(getFilesDir(), FILENAME);
+       File extstorage = Environment.getExternalStorageDirectory();
+       File path = new File(extstorage.getAbsolutePath() + "/myfolder",FILENAME);
         try {
             if (file.createNewFile()) {
                 Toast.makeText(getApplicationContext(), "File Created",
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 delete.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
-        file = new File(getFilesDir(), FILENAME);
+        file = new File(path, FILENAME);
         boolean isSuccess = file.delete();
         Toast.makeText(getApplicationContext(), "File Deleted",
                 Toast.LENGTH_LONG).show();
@@ -73,7 +74,7 @@ delete.setOnClickListener(new View.OnClickListener() {
         delete = (Button) findViewById(R.id.removeExternalStorage);
     }
 
-    // class to read data from file
+  // AsyncTask
    private class readFromFile extends AsyncTask<String, Integer, String> {
 
         File f;
@@ -83,7 +84,8 @@ delete.setOnClickListener(new View.OnClickListener() {
             this.f = f;
 // TODO Auto-generated constructor stub
         }
-
+ 
+       // Perform an operation on a background thread
         @Override
         protected String doInBackground(String... str) {
             String enter = "\n";
@@ -109,7 +111,7 @@ delete.setOnClickListener(new View.OnClickListener() {
 
         }
 
-        // returns data from file to textview
+        // Runs on the UI thread after doInBackground()
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
